@@ -7,8 +7,10 @@ var Corn = require('../shared/cornjob');
 router.get('/', async (req, res)=>{
     let time = new Date().toString();
     await Corn.create({"time":time}).then((response)=>{
-        res.send(`Time saved ${time}`);
-    });    
+        res.send(`Time saved ${time}: ${response}`);
+    }).catch((e)=>{
+        res.send(`Time not saved ${time}: ${e}`);
+    });;    
 });
 
 
