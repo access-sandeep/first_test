@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../partials/head'); %>
+</head>
+<body class="container">
+
+<header>
+  <%- include('../partials/header'); %>
+</header>
+
+<main>
+  <div class="jumbotron">
+    <h1><%-success%></h1>
+    <p><%-detail%></p>
+    <pre><%-data%></pre>
+  </div>
+  <% if(success=="Success") { %>
+  <div style="display: flex;">
+    <form method="post" action="/addbookimageaction" name="book_images_form" enctype="multipart/form-data">
+      <input type="hidden" name="id" value="<%-data%>" />
+
+      <div class="form-group" id="first_additional">
+          <label>Products Image</label>
+          <input type="file" class="form-control-file" name="books_images">
+      </div>
+
+      <div class="form-group">
+          <button onclick="add_more_image_field(event, 'first_additional');">Add more additional Image</button>
+      </div>
+
+      <div style="display: flex;">
+        <div class="form-group" style="flex-flow: column;">
+          <button type="submit" class="btn btn-primary" name="submit">Update</button>
+        </div>
+        <div class="form-group" style="flex-flow: column;">
+          <a class="btn btn-danger" href="/addbookform">Back</a>
+        </div>
+      </div>
+      </form>
+  </div>
+  <% } else {%>
+  <div class="form-group" style="flex-flow: column;">
+    <a class="btn btn-danger" href="/addbookform">Back</a>
+  </div>    
+  <% } %>  
+</main>
+
+<footer>
+  <%- include('../partials/footer'); %>
+</footer>
+<script>
+  function add_more_image_field(event, id) {
+    event.preventDefault();
+    event.stopPropagation();
+    let pilot_file_field = window.document.querySelector("#"+id);
+    let pilot_file_field_new = document.createElement('div');
+    pilot_file_field_new.classList.add('form-group');
+    let label = document.createElement('label');
+    label.innerText = 'Other Addmitonal Image';
+    pilot_file_field_new.appendChild(label);
+
+    let inputfield = document.createElement('input');
+    inputfield.type = 'file';
+    inputfield.name = 'books_images';
+    inputfield.classList.add('form-control-file');
+    pilot_file_field_new.appendChild(inputfield);
+
+    pilot_file_field_new.id = id+'_'+Date.now();
+    let removeButton = document.createElement('button');
+    removeButton.innerText = '[-]';
+    removeButton.addEventListener('click', ()=>{
+      pilot_file_field_new.remove();
+    });
+    pilot_file_field_new.appendChild(removeButton);
+    pilot_file_field.appendChild(pilot_file_field_new);
+  }
+</script>
+</body>
+</html>

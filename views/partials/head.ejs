@@ -1,0 +1,39 @@
+<meta charset="UTF-8">
+<title>Secure DehingPatkai Datacenter</title>
+
+<!-- CSS (load bootstrap from a CDN) -->
+<link rel="stylesheet" href="stylesheets/css/bootstrap.min.css">
+<style>
+  body { padding-top:50px; }
+  .width-17 {
+    width: 23.2rem;
+  }
+
+  .labelContainer {
+    height: 30px;
+    border-radius: 3px;
+    display: flex;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    padding : 5px;
+  }
+
+  .labelContainer span {
+    height: 30px;
+    width: 100%;
+    color: #000;
+    text-overflow: ellipsis;
+    display: block;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    transform: translateX(0);
+    transition: 5s;
+  }
+
+  .labelContainer:first-of-type:hover span {
+    width: auto;
+    transform: translateX(calc(300px - 100%));
+  }
+</style>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../partials/head'); %>
+</head>
+<body class="container">
+
+<header>
+  <%- include('../partials/header'); %>
+</header>
+
+<main>
+  <div class="jumbotron">
+    <h1><%-action.charAt(0).toUpperCase() + action.slice(1)%> Book</h1>
+</div>
+<div>
+    <form method="post" action="/addbookaction" name="books_form">
+      <input type="hidden" name="id" value="<%-id%>" />
+      <input type="hidden" name="action" value="<%-action%>" />
+        <div class="form-group">
+            <label for="categories">Categories</label>
+            <select name="categories" class="form-control" multiple>
+            <% for(i=0; i<categories.length; i++) { 
+                let selected = '';
+                if(book.categories!==undefined && book.categories.length>0) {
+                  selected = book.categories.includes(categories[i].id)?'selected':'';
+                }
+            %>
+                <option value="<%- categories[i].id %>" <%=selected%>><%- categories[i].name %> - <%- categories[i].description %></option>
+            <% } %>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="name">Name</label>
+            <% if (action=='delete') {%>
+              <p class="form-control"><%-book.name?book.name:''%></p>
+            <%} else {%>
+              <input type="text" class="form-control" name="name" value="<%-book.name?book.name:''%>" />
+            <%}%>
+            
+        </div>
+
+        <div class="form-group">
+            <label for="price">Price</label>
+            <% if (action=='delete') {%>
+              <p class="form-control"><%-book.price?book.price:''%></p>
+            <%} else {%>
+              <input type="number" class="form-control" name="price" value="<%-book.price?book.price:''%>" />
+            <%}%>            
+        </div>
+
+        <div class="form-group">
+            <label for="discount">Discount %</label>
+            <% if (action=='delete') {%>
+              <p class="form-control"><%-book.discount?book.discount:''%></p>
+            <%} else {%>
+              <input type="number" class="form-control" name="discount" value="<%-book.discount?book.discount:''%>" />
+            <%}%>               
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <% if (action=='delete') {%>
+              <p class="form-control"><%-book.description?book.description:''%></p>
+            <%} else {%>
+              <textarea  class="form-control" name="description"><%-book.description?book.description:''%></textarea>
+            <%}%>             
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary" name="submit">Next</button>
+          <button type="button" class="btn btn-danger" name="cancel" onclick="window.history.go(-1);">Back</button>
+        </div>
+      </form>
+      <form method="post" action="/removeimage" name="books_image_form">
+        <div class="form-group">
+            <h2>Images</h2>
+            <% if (action=='delete') {%>
+              <p class="form-control alert-danger">All Images will also be deleted</p>
+            <%} else {%>              
+              <p class="form-control alert-success">You can remove irrelavent images <input type="checkbox" name="remove_image_all" onclick="checkall()" /></p>
+            <%}%>    
+            <pre>
+              <% if(book.additional_images.length>0) {%>
+                <% book.additional_images.map((image_data, key)=>{%>
+                  <img src="./<%-book._id %>/<%-image_data.thumb %>" width="100"/>
+                  <p><strong>Filename: </strong><%-image_data.thumb %> <input type="checkbox" name="remove_image[]" value="<%-image_data._id %>" onchange="check(event)" /></p>
+                <%});%>
+              <%} else {%>
+                <p class="form-control alert-info">No Images</p>
+              <%} %>
+            </pre>  
+            <input type="hidden" name="id" value="<%-id%>" />
+            <button class="btn btn-sm btn-danger">Remove</button>       
+        </div>
+      </form>
+  </div>
+</main>
+
+<footer>
+  <%- include('../partials/footer'); %>
+</footer>
+<script>
+  function checkall() {
+    if(document.querySelector("[name='remove_image_all']").checked) {
+      document.querySelectorAll("[name='remove_image[]']").forEach((ele)=>{ele.setAttribute('selected', true); ele.setAttribute('checked', true)});
+    } else {
+      document.querySelectorAll("[name='remove_image[]']").forEach((ele)=>{ele.setAttribute('selected', false); ele.setAttribute('checked', false); ele.removeAttribute('checked')});
+    }
+    
+  }
+
+  function check(event) {
+    if(event.target.checked) {
+      event.target.setAttribute('selected', true);
+      event.target.setAttribute('checked', true);
+    } else  {
+      event.target.removeAttribute('selected');
+      event.target.removeAttribute('checked');
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../partials/head'); %>
+</head>
+<body class="container">
+
+<header>
+  <%- include('../partials/header'); %>
+</header>
+<main>
+    <div class="row">
+        <div class="jumbotron col-12">
+            <h1>Books library</h1>
+        </div>
+    </div>
+    <div>
+        <form action="/addbookaction" method="post" class="row">            
+            <input type="hidden" name="action" class="form-control" value="multidelete" />
+        <% for(i=0; i<books.length; i++) { 
+            let booksi = books[i];
+            let additional_images = booksi.additional_images;
+            let default_img =`./images/image_cap.svg`;
+            let cover_image_index = 0;
+            if(!additional_images) {
+                default_img =`./images/image_cap.svg`;
+            } else {
+                if(additional_images.length>0){
+                    if(!booksi.cover_image_index) {
+                        cover_image_index = 0;
+                    } else {
+                        cover_image_index = booksi.cover_image_index;
+                    }
+                    default_img = `./${booksi._id}/${additional_images[cover_image_index].thumb}`;
+                } else {
+                    default_img =`./images/image_cap.svg`;
+                }
+            }
+        %>
+            <div class="card width-17 m-1">
+                <img class="card-img-top" src="<%-default_img%>" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title" style="
+                    height: 30px; overflow:hidden;
+                " title="<%-booksi.name%>"><div class="labelContainer"><span><%-booksi.name%></span></div></h5>
+                    <p class="card-text" style="
+                    overflow-y: scroll;
+                    height: 125px;
+                "><%-booksi.description%></p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">id: <%-booksi.id%>  </li>
+                    <li class="list-group-item">Price: <%-booksi.price%></li>
+                    <li class="list-group-item">Discount: <%-booksi.discount%>%</li>
+                    <li class="list-group-item">Total Ratings: <%-booksi.rating_total%></li>
+                    <li class="list-group-item"><input type="checkbox" name="dbid[]" value="<%-booksi._id%>" > <strong style="color:red;">Check for deletion</strong></li>
+                </ul>
+                <div class="card-body">
+                    <a href="/addbookform?action=edit&q=<%-booksi._id%>" class="card-link">Edit</a>
+                    <a href="/addbookform?action=delete&q=<%-booksi._id%>" class="card-link">Delete</a>
+                </div>
+            </div>
+        <% } %>
+            <div class="row col-12 mt-5">
+                <button name="deletemultiple" class="btn btn-danger" onclick="return confirm(`This operation will permanently delete many books at a time.\nAre you sure to proceed?`);">Delete selected</button>
+            </div>
+        </form> 
+    </div>
+</main>
+
+<footer>
+  <%- include('../partials/footer'); %>
+</footer>
+
+</body>
+</html>
