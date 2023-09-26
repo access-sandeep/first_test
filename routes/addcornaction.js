@@ -4,9 +4,12 @@ var Corn = require('../shared/cornjob');
 
 
 /* Add corn. */
-router.post('/', async (req, res)=>{
+router.get('/', async (req, res)=>{
     let time = new Date().toString();
     await Corn.create({"time":time}).then((response)=>{
         res.send(`Time saved ${time}`);
     });    
 });
+
+
+module.exports = router;
