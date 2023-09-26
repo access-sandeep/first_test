@@ -13,6 +13,7 @@ const savecategory = require('./routes/savecategory');
 const editbooksData = require('./routes/editbooks');
 const addbookimageaction = require('./routes/addbookimageaction');
 const removeImage = require('./routes/removeImage');
+const addCorn = require('./routes/addcornaction');
 
 const app = express();
 
@@ -50,5 +51,6 @@ app.use('/addbookaction', addbookaction);
 app.use('/savecategory', savecategory);
 app.use('/addbookimageaction', addbookimageaction);
 app.use('/removeimage', removeImage);
+app.use('/addcorn', addCorn);
 
 module.exports = app;
